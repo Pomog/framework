@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta tags for proper scaling on different devices -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title for the Todo List Application -->
+    <title>Todo List Application</title>
+
+    <!-- Link to external CSS file for styling -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<!-- Main container for the app (where the Todo List will be rendered) -->
+<div id="app"></div>
+
+<!-- Importing JavaScript to handle Todo List functionality -->
+<script type="module">
+    // Import the TodoList class from the components folder
+    import { TodoList } from './app/components/todoList.js';
+
+    // Create a new instance of TodoList
+    window.todoList = new TodoList();
+
+    // Render the Todo List to the DOM inside the 'app' div
+    window.todoList.renderToDOM();
+</script>
+
+</body>
+
+</html>
