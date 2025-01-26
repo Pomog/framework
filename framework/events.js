@@ -1,25 +1,40 @@
-// Class for managing events and listeners
+// A simple class for managing custom events and their listeners
 class EventSystem {
-
+    /**
+     * Initializes the event system with an empty storage for events.
+     */
     constructor() {
-        this.events = {}; // Object to store event listeners
+        this.events = {}; // Stores events as keys and their listeners as arrays.
     }
 
-    // Method to register an event listener
+    /**
+     * Registers a listener for a specific event type.
+     * @param {string} event - The name of the event to listen for.
+     * @param {Function} listener - The callback function to execute when the event is triggered.
+     */
     on(event, listener) {
+        // If the event is new, create an empty array to hold its listeners.
         if (!this.events[event]) {
-            this.events[event] = []; // Initialize an array for the event if it doesn't exist
+            this.events[event] = [];
         }
-        this.events[event].push(listener); // Add the listener to the event
+        // Add the provided listener to the event's listener list.
+        this.events[event].push(listener);
     }
 
-    // Method to emit an event and notify all listeners
+    /**
+     * Triggers an event, notifying all its registered listeners.
+     * @param {string} event - The name of the event to trigger.
+     * @param {*} data - Optional data to pass to each listener when the event is triggered.
+     */
     emit(event, data) {
+        // Retrieve the list of listeners for the specified event.
         const listeners = this.events[event];
+
         if (listeners) {
-            listeners.forEach(listener => listener(data)); // Call each listener with the event data
+            // Call each listener, passing the provided data to them.
+            listeners.forEach((listener) => listener(data));
         }
     }
 }
 
-export { EventSystem }; 
+export { EventSystem }; // Export the class for use in other parts of the application.

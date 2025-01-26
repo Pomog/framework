@@ -1,56 +1,79 @@
-// Class representing a DOM element
 class Element {
-
-    // Constructor to initialize an Element
+    /**
+     * Initializes a new custom element.
+     * @param {string} tag - The type of HTML tag (e.g., 'div', 'p').
+     * @param {Object} [attrs={}] - Key-value pairs for HTML attributes (e.g., { class: "container" }).
+     * @param {Array} [children=[]] - A list of child elements or plain text.
+     */
     constructor(tag, attrs = {}, children = []) {
-        this.tag = tag; // HTML tag (e.g., 'div', 'span')
-        this.attrs = attrs; // Object containing attributes for the element
-        this.children = children; // Array of child elements or text nodes
+        this.tag = tag; // HTML tag for this element
+        this.attrs = attrs; // Attributes for this element
+        this.children = children; // Child elements or text nodes
     }
 
-    // Render method to create and return a DOM element
+    /**
+     * Creates and returns the actual DOM node.
+     * @returns {HTMLElement} - The created DOM element with all its children.
+     */
     render() {
-        const el = document.createElement(this.tag); // Create the element using the tag
+        // Create a new DOM element based on the provided tag.
+        const el = document.createElement(this.tag);
 
-        // Set attributes on the created element
-        for (const attr in this.attrs) {
-            el.setAttribute(attr, this.attrs[attr]);
+        // Assign attributes to the element.
+        for (const [key, value] of Object.entries(this.attrs)) {
+            el.setAttribute(key, value);
         }
 
-        // Append child elements or text nodes
-        this.children.forEach(child => {
+        // Add each child to the created element.
+        this.children.forEach((child) => {
             if (child instanceof Element) {
-                el.appendChild(child.render()); // Render child if it's an Element
+                // If the child is an Element instance, render it recursively.
+                el.appendChild(child.render());
             } else {
-                el.appendChild(document.createTextNode(child)); // Create and append text node
+                // If the child is plain text, create a text node.
+                el.appendChild(document.createTextNode(child));
             }
         });
 
-        return el; // Return the created element
+        return el; // Return the fully constructed element.
     }
 }
 
-// Function to render an Element instance
+/**
+ * Converts a custom Element instance into a DOM node.
+ * @param {Element} element - The custom Element instance.
+ * @returns {Node} - A DOM node created from the Element.
+ */
 function renderElement(element) {
+    // Ensure the input is an Element; otherwise, log an error.
     if (!(element instanceof Element)) {
-        console.error('Invalid element passed to renderElement:', element); // Log error if not an Element
-        return document.createTextNode(''); // Return an empty text node if invalid
+        console.error('renderElement expects an instance of Element:', element);
+        return document.createTextNode(''); // Fallback to an empty text node.
     }
-    return element.render(); // Render the valid Element
+    return element.render(); // Use the Element's render method.
 }
 
-// Function to render a component into a specified container
+/**
+ * Adds a component to a specific container in the DOM.
+ * @param {Element} component - The custom Element to be added.
+ * @param {string} containerId - The ID of the DOM element where the component should be added.
+ */
 function renderComponent(component, containerId) {
-    const container = document.getElementById(containerId); // Get the container element by ID
+    // Find the container in the DOM using its ID.
+    const container = document.getElementById(containerId);
 
     if (!container) {
-        console.error(`Container with id "${containerId}" not found.`); // Log error if container is not found
+        // If the container doesn't exist, show an error message.
+        console.error(`No container found with id "${containerId}".`);
         return;
     }
 
-    container.innerHTML = ''; // Clear any existing content in the container
-    container.appendChild(renderElement(component)); // Render and append the component
+    // Clear any existing content inside the container.
+    container.innerHTML = '';
+
+    // Render the component and add it to the container.
+    container.appendChild(renderElement(component));
 }
 
-export { Element, renderElement, renderComponent }; // Export the classes and functions for use elsewhere
-
+// Exporting the Element class and the utility functions for use in other files.
+export { Element, renderElement, renderComponent };

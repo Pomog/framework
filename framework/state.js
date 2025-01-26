@@ -1,26 +1,51 @@
-// Class for managing application state
+// A simple Store class to manage the application's shared state
 class Store {
-
+    /**
+     * Initializes the Store with a given initial state.
+     * @param {Object} initialState - The starting state of the application.
+     */
     constructor(initialState) {
-        this.state = initialState; // Initial state of the store
-        this.listeners = []; // Array of listeners to notify on state changes
+        this.state = initialState; // Holds the current state of the application.
+        this.listeners = []; // Stores all functions to be called when the state changes.
     }
 
-    // Method to subscribe a listener to state changes
+    /**
+     * Subscribes a listener function to state changes.
+     * The listener will be called whenever the state is updated.
+     * @param {Function} listener - A callback function that receives the updated state.
+     */
     subscribe(listener) {
-        this.listeners.push(listener); // Add the listener to the array
+        if (typeof listener !== 'function') {
+            console.error('Listener must be a function.');
+            return;
+        }
+        this.listeners.push(listener); // Add the listener to the list of subscribers.
     }
 
-    // Method to update the state and notify all listeners
+    /**
+     * Updates the current state with new values and notifies all subscribed listeners.
+     * @param {Object} newState - An object containing the properties to update in the state.
+     */
     setState(newState) {
-        this.state = { ...this.state, ...newState }; // Merge new state with current state
-        this.listeners.forEach(listener => listener(this.state)); // Notify all listeners with the new state
+        if (typeof newState !== 'object') {
+            console.error('State must be an object.');
+            return;
+        }
+
+        // Merge the new state into the existing state.
+        this.state = { ...this.state, ...newState };
+
+        // Notify all registered listeners about the updated state.
+        this.listeners.forEach((listener) => listener(this.state));
     }
 
-    // Method to get the current state
+    /**
+     * Retrieves the current state of the application.
+     * @returns {Object} The current state.
+     */
     getState() {
-        return this.state; // Return the current state
+        return this.state; // Return the current state object.
     }
 }
 
-export { Store };
+export { Store }; // Export the Store class to make it available for use in other modules.

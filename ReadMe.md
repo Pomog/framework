@@ -1,81 +1,91 @@
-# Mini-Framework Documentation
+# Description
 
-The Mini-Framework is a lightweight, custom-built framework designed to simplify the development of dynamic web applications. It provides essential tools for managing application state, manipulating the DOM, routing, and handling events, without the need for established libraries like React, Angular, or Vue.
+This application is a simple framework designed to build a modular, client-side single-page application (SPA).
+It consists of several foundational files that work together to manage the application's UI, routing, events, and state.
 
-## Getting Started
+## Using
 
-1. Clone or Download the repository.
-2. Open `index.html ` using `Live Server `
-3. Add Todos: Enter a task in the input field and click "Add".
-4. Filter Todos: Use the "All", "Active", or "Completed" buttons to filter your list.
-5. Clear Completed Todos: Click "Clear completed" to remove all finished tasks.
+### Initialization:
+When the app starts, the index.html file is loaded in the browser.
+The TodoList component is imported, instantiated, and rendered to the #app container using its renderToDOM method.
 
+### Rendering Components:
+The framework/dom.js file provides the functionality to create and render UI components dynamically.
+Components (e.g., TodoList, TodoItem) are represented as instances of the Element class.
+These virtual structures are transformed into actual DOM elements via the renderElement function.
 
-## Project structure
+### User Interaction:
+* Adding a Task
+The user types a new task into the input field and clicks "Add."
+The TodoList component updates the application state with the new task using the Store and re-renders the list of todos.
+* Toggling or Removing a Task
+The TodoItem component provides buttons to mark a task as completed or remove it.
+These actions update the application state and notify other parts of the app via events.
 
-### 1. App folder 
+### Event Handling:
+Components communicate using the event system (framework/events.js).
+For example, when a task is deleted, an event (e.g., taskDeleted) can be emitted to update related components.
 
-The app folder contains the components that define the structure and functionality of the application:
+### Routing:
+The framework/router.js file handles navigation within the app without page reloads.
+It updates the URL and renders the corresponding component in the #app container.
 
-* Components Folder: 
-This folder contains two files: todoItem.js and todoList.js.
+## Key Components and Files
 
-#### todoItem.js
+### index.html +
+* Purpose: Entry point for the application.
+* Includes:
+A <div id="app"> placeholder where the application renders content.
+A script to import and initialize the TodoList component.
 
-Defines the TodoItem class, representing a single task in the app.
+### framework/dom.js +
+* Purpose: Provides a simple abstraction for creating and rendering DOM elements.
+* Key Features:
+Element class: Represents components as virtual DOM-like objects (tag, attributes, children).
+renderElement function: Converts Element instances into actual DOM elements.
+renderComponent function: Renders a component into a specified container by ID.
 
-Constructor: Initializes the todo with text and provides functionality to remove or toggle the task.
-Render Method: Renders a <li> element for the todo, with a line-through style if marked as complete.
- 
-![code1](css/code1.png)
+### framework/events.js +
+* Purpose: Implements an event system for inter-component communication.
+* Key Features:
+on method: Registers event listeners for specific events.
+emit method: Triggers an event, notifying all registered listeners.
 
-#### todoList.js
+### framework/router.js +
+* Purpose: Manages navigation within the app.
+* Key Features:
+Matches URL segments to specific routes (objects with path and component properties).
+Updates the browser's URL and renders the correct component.
 
-Manages the entire todo list's functionality through the TodoList class.
+### framework/state.js +
+* Purpose: Provides a central store for managing application state.
+* Key Features:
+Allows components to subscribe to state changes.
+Provides methods to update state and notify subscribers.
 
-* Constructor: Sets up the state, event handling, and DOM interactions.
-* AddTodo Method: Adds new tasks to the state.
-* FilterTodos Method: Updates the filter and re-renders the list.
-* GetFilteredTodos Method: Returns todos based on the selected filter (all, active, completed).
-* ClearCompleted Method: Removes all completed tasks.
-* RenderToDOM Method: Renders the todo list and attaches event listeners.
-* Helper Methods: Handle interactions like adding, removing, or toggling todos, and saving them to localStorage.
+### app/components/todoList.js +
+* Purpose: Defines the main Todo List component.
+* Key Features:
+Manages adding, removing, and rendering todos.
+Uses the Store and EventSystem for state management and communication.
 
-![code2](css/code2.png)
+### app/components/todoItem.js
+* Purpose: Represents a single todo item in the list.
+* Key Features:
+Each TodoItem is responsible for rendering its own structure and handling its interactions.
+Properties:
+todo: Data object for the todo item ({ id, text, completed }).
+remove: Callback to handle removing the item.
+toggle: Callback to handle toggling the item's completion state.
+Rendering:
+Creates a virtual DOM element (<li>) with:
+<span> for the task text (strikethrough applied if completed).
+"Toggle" button to switch the completion state.
+"Remove" button to delete the task.
 
-### 2. framework folder 
-
-The framework folder includes essential files that form the core of the mini-framework, focusing on DOM manipulation, routing, state management, and event handling:
-
-#### dom.js
-
-Provides utilities for abstracting and manipulating the DOM.
-
-Element Class: Represents a virtual DOM structure.
-renderComponent Function: Renders virtual DOM elements to the actual DOM.
-
-![code3](css/code3.png)
-
-#### router.js
-The router.js file provides a routing system to synchronize the application state with the URL, allowing navigation between different views.
-
-* Router Class: Manages URL changes and maps them to specific components or functions.
-
-![code4](css/code4.png)
-
-#### state.js 
-The state.js file handles state management for the application, allowing a centralized store that multiple components can interact with and share, making it easier to maintain and update.
-
-* Store Class: Manages global state.
-* subscribe Method: Allows components to listen for state changes. 
-
-![code5](css/code5.png)
-
-#### events.js
-The events.js file provides a custom event handling system, allowing to manage user interactions and other events in a more controlled and centralized way.
-
-* EventSystem Class: Custom event handling system.
-* on and emit Methods: Register and trigger events.
-
-![code6](css/code6.png)
+### TODO
+1. Add error boundaries or fallback UI for handling unexpected errors.
+2. Implement unit tests for core classes like Store, Router, and EventSystem.
+3. Enhance accessibility by adding ARIA attributes to rendered elements.
+4. Optimize performance by minimizing unnecessary DOM updates (e.g., diffing algorithm).
 
