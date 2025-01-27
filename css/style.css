@@ -165,3 +165,11 @@ ul {
 li {
     margin-bottom: 10px;
 }
+
+.footer {
+    display: block; /* Ensure visible by default */
+}
+
+.footer.hidden {
+    display: none; /* Hidden class for when no todos are present */
+}
