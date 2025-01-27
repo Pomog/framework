@@ -73,6 +73,7 @@ export class TodoList {
     }
 
     // Render the todo list to the webpage
+
 // Updated renderToDOM to include the dblclick functionality
     renderToDOM() {
         const html = this.renderHTML(); // Generate the HTML structure for the todo list
@@ -107,7 +108,14 @@ export class TodoList {
         todoTextElements.forEach(span => {
             span.addEventListener('dblclick', (event) => this.handleEditTodo(event));
         });
+
+        // Update the active task count
+        const uncheckedCountElement = document.getElementById('unchecked-count');
+        if (uncheckedCountElement) {
+            uncheckedCountElement.textContent = `Active tasks: ${this.countUncheckedItems()}`;
+        }
     }
+
 
 // Add a method to handle editing a to-do
     handleEditTodo(event) {
